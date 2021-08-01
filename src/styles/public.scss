@@ -1,0 +1,85 @@
+* {
+  font-size: 13px;
+}
+
+//滚动盒子
+.scroll-box {
+  height: 0px;
+  overflow-y: scroll;
+  flex: 1 1 0%;
+}
+
+//滚动条
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(144, 147, 153, 0.5);
+}
+.el-scrollbar .el-scrollbar__wrap {
+  scrollbar-width: none; //防止火狐出现双重滚动条
+}
+
+//公共页面样式
+.public-page {
+  margin: 10px;
+  box-shadow: 0 0 4px 0 hsl(0deg 0% 78% / 40%);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  .page-name {
+    height: 60px;
+    display: flex;
+    padding: 0px 10px;
+    align-items: center;
+    justify-content: space-between;
+    .name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+  .page-bg-gray {
+    margin: 0 10px 10px;
+    padding: 10px;
+    background: #f2f2f6 !important;
+    border-radius: 5px !important;
+  }
+
+  .page-search-content {
+    background-color: #fff;
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-action {
+    a {
+      color: #2589ff;
+      margin-right: 15px;
+      font-size: 12px;
+    }
+  }
+}
+
+//公共底部样式
+.public-page-bottom {
+  box-shadow: 0 0 4px hsl(0deg 0% 78% / 40%);
+  height: 60px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

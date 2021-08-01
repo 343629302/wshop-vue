@@ -1,0 +1,129 @@
+//全局自定义变量
+$theme-color: #1890ff;
+$border-color: #ebeef5;
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+//按钮样式
+.ant-btn {
+  font-size: 12px;
+  border-radius: 5px;
+}
+.ant-btn.default-primary {
+  color: $theme-color;
+  border-color: $theme-color;
+}
+
+//选择器样式
+.ant-select-selector {
+  border-radius: 5px !important;
+  font-size: 12px;
+}
+.ant-select-dropdown {
+  .ant-select-item {
+    font-size: 12px;
+  }
+}
+
+//输入框样式
+.ant-input {
+  font-size: 12px;
+  height: 32px;
+  border-radius: 5px;
+}
+.ant-input-affix-wrapper {
+  font-size: 12px;
+  height: 32px;
+  border-radius: 5px;
+  width: 100%;
+  .ant-input {
+    border-radius: 0;
+    height: auto;
+  }
+}
+
+//底部脚部样式
+.ant-layout-footer {
+  background-color: transparent;
+  padding: 0;
+}
+
+//分页样式
+.ant-pagination {
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    a {
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .ant-pagination-item {
+    border-radius: 5px;
+    &.ant-pagination-item-active {
+      background: $theme-color;
+      border: $theme-color;
+      a {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+//弹窗样式
+.ant-modal-content {
+  border-radius: 5px;
+  overflow: hidden;
+  .ant-modal-close {
+    outline: none;
+    .ant-modal-close-x {
+      height: 50px;
+      width: 50px;
+      line-height: 50px;
+    }
+  }
+  .ant-modal-header {
+    padding: 15px;
+    box-sizing: border-box;
+    border: none;
+    .ant-modal-title {
+      font-size: 14px;
+    }
+  }
+  .ant-modal-body {
+    padding: 0px 15px;
+  }
+  .ant-modal-footer {
+    border: none;
+    padding: 15px;
+  }
+}
+
+//确认弹窗样式
+.ant-modal-confirm {
+  .ant-modal-body {
+    padding: 32px 32px 24px;
+  }
+}
+
+//表单样式
+.ant-form {
+  .ant-form-item {
+    .ant-form-item-label {
+      label {
+        font-size: 13px;
+      }
+    }
+  }
+}
