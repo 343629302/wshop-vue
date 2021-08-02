@@ -83,6 +83,8 @@
               <a-radio value="1">多规格商品</a-radio>
             </a-radio-group>
           </a-form-item>
+          <div v-show="form.type === '0'">123</div>
+          <div v-show="form.type === '1'">321</div>
         </a-form>
       </div>
     </div>
