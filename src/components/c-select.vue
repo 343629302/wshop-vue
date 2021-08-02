@@ -26,8 +26,8 @@ export default {
       default: 'label',
     },
     modelValue: {
-      type: Number || String,
-      default: '',
+      type: [Number, String, undefined],
+      default: undefined,
     },
   },
   setup(props, { emit }) {

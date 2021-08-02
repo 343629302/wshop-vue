@@ -40,12 +40,6 @@ export default {
       padding: 0px 30px;
       border-radius: 5px;
     }
-    .ant-tabs-tabpane,
-    .ant-tabs-content {
-      background-color: #fff;
-      border-radius: 5px;
-      overflow: hidden;
-    }
   }
 }
 </style>
