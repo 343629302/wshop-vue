@@ -23,11 +23,11 @@ export default {
   position: relative;
   .textarea-length {
     position: absolute;
-    bottom: 1px;
-    right: 1px;
+    bottom: 2px;
+    right: 2px;
     font-size: 12px;
     background-color: #fff;
-    padding:2px 5px
+    padding:1px 5px
   }
 }
 </style>

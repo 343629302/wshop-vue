@@ -83,17 +83,134 @@
               <a-radio value="1">多规格商品</a-radio>
             </a-radio-group>
           </a-form-item>
-          <div v-show="form.type === '0'">123</div>
-          <div v-show="form.type === '1'">321</div>
+          <div v-show="form.type === '0'">
+            <a-form-item label="售卖价格">
+              <a-input
+                v-model:value="form.price"
+                placeholder="请输入价格"
+                type="number"
+                class="w-150px"
+                addon-after="元"
+              />
+            </a-form-item>
+
+            <a-form-item label="成本价">
+              <a-input
+                v-model:value="form.cost"
+                placeholder="请输入价格"
+                type="number"
+                class="w-150px"
+                addon-after="元"
+              />
+              <div class="form-hint mt-md">
+                成本价将不会对用户展示，仅在订单导出时，可导出该价格，便于商家统计使用
+              </div>
+            </a-form-item>
+
+            <a-form-item label="商品库存">
+              <a-input
+                v-model:value="form.stock"
+                placeholder="请输入价格"
+                type="number"
+                class="w-150px"
+                addon-after="元"
+              />
+            </a-form-item>
+
+            <a-form-item label="已出售数">
+              <a-input
+                v-model:value="form.sell"
+                placeholder="请输入价格"
+                type="number"
+                class="w-150px"
+                addon-after="件"
+              />
+            </a-form-item>
+          </div>
+          <div v-show="form.type === '1'">
+            <a-form-item label="商品规格">
+              <div class="specs-list">
+                <div
+                  class="specs-item"
+                  v-for="(item, index) in form.specsList"
+                  :key="item.id"
+                >
+                  <div class="specs-name">
+                    <a-input
+                      v-model:value="item.name"
+                      placeholder="请填写规格"
+                      maxLength="20"
+                      :suffix="`${item.name.length}/20`"
+                    />
+                  </div>
+                  <div class="specs-children-list">
+                    <div class="line"></div>
+                    <div
+                      class="specs-children-item"
+                      v-for="(cItem, cIndex) in item.childrenList"
+                      :key="cItem.id"
+                    >
+                      <a-input
+                        v-model:value="cItem.name"
+                        placeholder="请填写子规格"
+                        maxLength="20"
+                        :suffix="`${cItem.name.length}/20`"
+                      />
+
+                      <div
+                        class="specs-close"
+                        @click="handleDeleteSpecsChildrenItem(item, cIndex)"
+                      >
+                        <i class="iconfont icon-guanbi1"></i>
+                      </div>
+                    </div>
+                    <a-button
+                      type="link"
+                      @click="handleAddSpecsChildrenItem(item)"
+                      >添加规格值</a-button
+                    >
+                  </div>
+                  <div
+                    class="specs-close"
+                    @click="handleDeleteSpecsItem(index)"
+                  >
+                    <i class="iconfont icon-guanbi1"></i>
+                  </div>
+                </div>
+                <a-button
+                  type="primary"
+                  @click="handleAddSpecsItem"
+                  v-if="form.specsList.length < 3"
+                  >添加规格</a-button
+                >
+                <span v-else>最多添加3个规格</span>
+              </div>
+              <div class="specs-table"></div>
+            </a-form-item>
+            <a-form-item label="已出售数">
+              <a-input
+                v-model:value="form.sell"
+                placeholder="请输入价格"
+                type="number"
+                class="w-150px"
+                addon-after="件"
+              />
+            </a-form-item>
+          </div>
         </a-form>
       </div>
+    </div>
+
+    <div class="mt-lg bg-white info-item">
+      <div class="page-title">其他设置</div>
     </div>
   </div>
 </template>
 
 <script>
-import { toRefs, reactive } from 'vue';
+import { toRefs, reactive, getCurrentInstance, watch } from 'vue';
 import uploadImage from '@/components/upload-image.vue';
+import { v4 } from 'uuid';
 export default {
   components: {
     uploadImage,
@@ -105,6 +222,17 @@ export default {
         subhead: '',
         swiperImage: [],
         type: '0',
+        cost: 0,
+        price: 0,
+        stock: 0,
+        sell: 0,
+        specsList: [
+          {
+            id: v4(),
+            name: '',
+            childrenList: [{ name: '', id: v4() }],
+          },
+        ],
       },
       classifyList: [
         {
@@ -118,8 +246,100 @@ export default {
       ],
     });
 
+    const { proxy } = getCurrentInstance();
+
+    //添加规格
+    const handleAddSpecsItem = () => {
+      state.form.specsList.push({
+        id: v4(),
+        name: '',
+        childrenList: [],
+      });
+    };
+
+    //添加规格值
+    const handleAddSpecsChildrenItem = (item) => {
+      item.childrenList.push({ name: '', id: v4() });
+    };
+
+    //删除规格
+    const handleDeleteSpecsItem = (index) => {
+      proxy.$confirm((status) => {
+        if (status) {
+          state.form.specsList.splice(index, 1);
+        }
+      }, '您确认删除这个规格吗?');
+    };
+
+    //删除规格值
+    const handleDeleteSpecsChildrenItem = (item, index) => {
+      proxy.$confirm((status) => {
+        if (status) {
+          item.childrenList.splice(index, 1);
+        }
+      }, '您确认删除这个子规格吗?');
+    };
+
+    //生成规格表格
+    const generateSpecsTable = (tree) => {
+      let ars = [];
+      //将树结构解构为多维数组
+      tree.forEach((item) => {
+        const iArs = [];
+        item.childrenList.forEach((cItem) => {
+          iArs.push({
+            id: cItem.id,
+            fName: item.name,
+            name: cItem.name,
+          });
+        });
+        ars.push(iArs);
+      });
+      //计算规格数组
+      let specs = ars.reduce((total, value) => {
+        if (total?.length) {
+          let tem = [];
+          if (value.length) {
+            total.forEach((item) => {
+              value.forEach((vItem) => {
+                tem.push([].concat(...item, vItem));
+              });
+            });
+            return tem;
+          } else {
+            return total;
+          }
+        } else {
+          let tem = [];
+          value.forEach((item) => {
+            tem.push([item]);
+          });
+          return tem;
+        }
+      }, []);
+
+      specs = specs.map(item => {
+        
+      })
+    };
+
+    watch(
+      () => state.form.specsList,
+      (value) => {
+        generateSpecsTable(value);
+      },
+      {
+        immediate: true,
+        deep: true,
+      }
+    );
+
     return {
       ...toRefs(state),
+      handleAddSpecsChildrenItem,
+      handleAddSpecsItem,
+      handleDeleteSpecsItem,
+      handleDeleteSpecsChildrenItem,
     };
   },
 };
@@ -146,9 +366,91 @@ export default {
   .w-550px {
     width: 550px;
   }
+  .w-150px {
+    width: 150px;
+  }
   .form-hint {
     color: #999;
     font-size: 12px;
+  }
+  .specs-list {
+    .specs-item {
+      padding: 20px;
+      background-color: #f7f7f7;
+      border-radius: 4px;
+      margin-right: 20px;
+      margin-bottom: 25px;
+      position: relative;
+      &:hover {
+        > .specs-close {
+          display: block;
+        }
+      }
+      > .specs-close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        display: none;
+        cursor: pointer;
+        i {
+          color: #7b7b7b;
+          font-size: 20px;
+        }
+      }
+      .specs-name {
+        width: 250px;
+      }
+      .specs-children-list {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 30px;
+        position: relative;
+        .line {
+          position: absolute;
+          width: 20px;
+          height: 40px;
+          border-left: 1px solid #ededed;
+          border-bottom: 1px solid #ededed;
+          top: 0;
+          left: 10px;
+        }
+        .specs-children-item {
+          margin-top: 25px;
+          margin-right: 10px;
+          width: 200px;
+          position: relative;
+          &:hover {
+            .specs-close {
+              display: block;
+            }
+          }
+          > .specs-close {
+            position: absolute;
+            top: 0px;
+            right: -5px;
+            display: none;
+            cursor: pointer;
+            transform: translateY(-50%);
+            i {
+              color: #7b7b7b;
+              font-size: 20px;
+            }
+          }
+        }
+        > .ant-btn {
+          margin-top: 25px;
+          padding: 0px 4px;
+        }
+      }
+    }
+    > .ant-btn {
+      margin-left: 20px;
+    }
+
+    > span {
+      padding-left: 20px;
+      font-size: 13px;
+    }
   }
 }
 </style>
