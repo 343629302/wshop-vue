@@ -26,100 +26,86 @@
   </div>
 </template>
 
-<script>
-import { toRefs, reactive, watch, ref } from 'vue';
-import imageGallery from './image-gallery.vue';
-export default {
-  components: { imageGallery },
-  props: {
-    maxLength: {
-      type: Number,
-      default: 10,
-    },
-    modelValue: {
-      type: [String, Array],
-      default: () => [],
-    },
+<script setup>
+import { ref, watch } from 'vue';
+import ImageGallery from './image-gallery.vue';
+
+const props = defineProps({
+  maxLength: {
+    type: Number,
+    default: 10,
   },
-  setup(props, { emit }) {
-    const state = reactive({
-      imageList: [],
-      imageGalleryShow: false,
-      imageGalleryLength: 1,
-      editImageIndex: -1,
-    });
-
-    const galleryRef = ref(null);
-
-    //图片选择器显示
-    const handleImageGalleryShow = (editIndex) => {
-      state.imageGalleryShow = true;
-      if (typeof editIndex === 'number') {
-        state.editImageIndex = editIndex;
-        galleryRef.value.handleEditChange();
-      } else {
-        state.editImageIndex = -1;
-      }
-    };
-
-    //确认选择图片
-    const handleSelectConfirm = (images) => {
-      state.imageGalleryShow = false;
-      const editIndex = state.editImageIndex;
-      if (editIndex === -1) {
-        //非编辑状态
-        let value = images;
-        if (props.maxLength === 1) {
-          state.imageList = [];
-          value = images[0];
-        }
-        emit('update:modelValue', [].concat(state.imageList, value));
-      } else if (editIndex !== -1 && images.length) {
-        //编辑状态
-        const value = state.imageList;
-        value.splice(editIndex, 1, images[0]);
-        emit('update:modelValue', value);
-      }
-    };
-
-    //删除图片
-    const handleDeleteImage = (index) => {
-      let value = '';
-      if (props.maxLength > 1) {
-        value = state.imageList;
-        value.splice(index, 1);
-      }
-      emit('update:modelValue', value);
-    };
-
-    //监听图片列表
-    watch(
-      () => props.modelValue,
-      (val) => {
-        if (val && val.length) {
-          if (typeof val === 'string') {
-            state.imageList = [val];
-          } else {
-            state.imageList = val;
-          }
-        } else {
-          state.imageList = [];
-        }
-      },
-      {
-        immediate: true,
-      }
-    );
-
-    return {
-      ...toRefs(state),
-      handleImageGalleryShow,
-      handleSelectConfirm,
-      handleDeleteImage,
-      galleryRef,
-    };
+  modelValue: {
+    type: [String, Array],
+    default: () => [],
   },
+});
+const emit = defineEmits();
+
+const imageList = ref([]);
+const imageGalleryShow = ref(false);
+const editImageIndex = ref(-1);
+const galleryRef = ref(null);
+
+//图片选择器显示
+const handleImageGalleryShow = (editIndex) => {
+  imageGalleryShow.value = true;
+  if (typeof editIndex === 'number') {
+    editImageIndex.value = editIndex;
+    galleryRef.value.handleEditChange();
+  } else {
+    editImageIndex.value = -1;
+  }
 };
+
+//确认选择图片
+const handleSelectConfirm = (images) => {
+  imageGalleryShow.value = false;
+  const editIndex = editImageIndex.value;
+  if (editIndex === -1) {
+    //非编辑状态
+    let value = images;
+    if (props.maxLength === 1) {
+      imageList.value = [];
+      value = images[0];
+    }
+    emit('update:modelValue', [].concat(imageList.value, value));
+  } else if (editIndex !== -1 && images.length) {
+    //编辑状态
+    const value = imageList.value;
+    value.splice(editIndex, 1, images[0]);
+    emit('update:modelValue', value);
+  }
+};
+
+//删除图片
+const handleDeleteImage = (index) => {
+  let value = '';
+  if (props.maxLength > 1) {
+    value = imageList.value;
+    value.splice(index, 1);
+  }
+  emit('update:modelValue', value);
+};
+
+//监听图片列表
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val && val.length) {
+      if (typeof val === 'string') {
+        imageList.value = [val];
+      } else {
+        imageList.value = val;
+      }
+    } else {
+      imageList.value = [];
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <style lang="scss" scoped>

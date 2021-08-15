@@ -10,36 +10,30 @@
   </a-select>
 </template>
 
-<script>
-export default {
-  props: {
-    columns: {
-      type: Array,
-      default: () => [],
-    },
-    value: {
-      type: String,
-      default: 'value',
-    },
-    label: {
-      type: String,
-      default: 'label',
-    },
-    modelValue: {
-      type: [Number, String, undefined],
-      default: undefined,
-    },
+<script setup>
+const props = defineProps({
+  columns: {
+    type: Array,
+    default: () => [],
   },
-  setup(props, { emit }) {
-    //选择器修改时触发，反馈给父级
-    const handleSelectChange = (value) => {
-      emit('change', value);
-      emit('update:modelValue', value);
-    };
+  value: {
+    type: String,
+    default: 'value',
+  },
+  label: {
+    type: String,
+    default: 'label',
+  },
+  modelValue: {
+    type: [Number, String, undefined],
+    default: undefined,
+  },
+});
+const emit = defineEmits();
 
-    return {
-      handleSelectChange,
-    };
-  },
+//选择器修改时触发，反馈给父级
+const handleSelectChange = (value) => {
+  emit('change', value);
+  emit('update:modelValue', value);
 };
 </script>

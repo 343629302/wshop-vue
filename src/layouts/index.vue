@@ -25,37 +25,23 @@
   </a-layout>
 </template>
 
-<script>
-import LeftNav from "./components/left-nav.vue";
-import { toRefs, reactive } from "vue";
-export default {
-  components: {
-    LeftNav,
-  },
-  setup() {
-    const state = reactive({
-      secondRouters: [],
-      secondRouterPath: "",
-    });
+<script setup>
+import LeftNav from './components/left-nav.vue';
+import { ref } from 'vue';
 
-    //一级路由改变的时候，获取二级路由
-    const handleFirstRouteChange = ({ ars, path }) => {
-      state.secondRouters = ars;
-      handleSaveRouter(path);
-    };
+const secondRouters = ref([]);
+const secondRouterPath = ref('');
 
-    //保存路由
-    const handleSaveRouter = (path) => {
-      state.secondRouterPath = path;
-      sessionStorage.setItem("secondRouterPath", path);
-    };
+//一级路由改变的时候，获取二级路由
+const handleFirstRouteChange = ({ ars, path }) => {
+  secondRouters.value = ars;
+  handleSaveRouter(path);
+};
 
-    return {
-      handleFirstRouteChange,
-      handleSaveRouter,
-      ...toRefs(state),
-    };
-  },
+//保存路由
+const handleSaveRouter = (path) => {
+  secondRouterPath.value = path;
+  sessionStorage.setItem('secondRouterPath', path);
 };
 </script>
 
@@ -91,7 +77,7 @@ export default {
               background: #e9eaf0;
               border-radius: 6px;
               &::after {
-                content: "";
+                content: '';
                 width: 0;
                 height: 0;
                 border-color: transparent transparent transparent #000;

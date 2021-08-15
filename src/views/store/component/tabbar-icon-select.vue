@@ -22,36 +22,23 @@
   </a-modal>
 </template>
 
-<script>
-export default {
-  props: {
-    activeIcon: {
-      type: String,
-      default: '',
-    },
+<script setup>
+const props = defineProps({
+  activeIcon: {
+    type: String,
+    default: '',
   },
-  setup(props, { emit }) {
-    const styleList = [
-      ['home', 'classify', 'car', 'user', 'member'],
-      [
-        'home-solid',
-        'classify-solid',
-        'car-solid',
-        'user-solid',
-        'member-solid',
-      ],
-    ];
+});
+const emit = defineEmits();
 
-    //选择图标
-    const handleSelectIcon = (icon) => {
-      emit('update:activeIcon', icon);
-    };
+const styleList = [
+  ['home', 'classify', 'car', 'user', 'member'],
+  ['home-solid', 'classify-solid', 'car-solid', 'user-solid', 'member-solid'],
+];
 
-    return {
-      styleList,
-      handleSelectIcon,
-    };
-  },
+//选择图标
+const handleSelectIcon = (icon) => {
+  emit('update:activeIcon', icon);
 };
 </script>
 

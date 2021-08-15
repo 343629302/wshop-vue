@@ -15,36 +15,26 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue';
-export default {
-  setup() {
-    const state = reactive({
-      orderList: [
-        {
-          title: '待付款订单',
-          count: 0,
-        },
-        {
-          title: '待发货订单',
-          count: 0,
-        },
-        {
-          title: '待处理售后',
-          count: 0,
-        },
-        {
-          title: '已售罄商品',
-          count: 0,
-        },
-      ],
-    });
-
-    return {
-      ...toRefs(state),
-    };
+<script setup>
+import { ref } from "vue";
+const orderList = ref([
+  {
+    title: "待付款订单",
+    count: 0,
   },
-};
+  {
+    title: "待发货订单",
+    count: 0,
+  },
+  {
+    title: "待处理售后",
+    count: 0,
+  },
+  {
+    title: "已售罄商品",
+    count: 0,
+  },
+]);
 </script>
 
 <style lang="scss" scoped>

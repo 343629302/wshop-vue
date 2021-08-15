@@ -185,7 +185,27 @@
                 >
                 <span v-else>最多添加3个规格</span>
               </div>
-              <div class="specs-table"></div>
+              <div class="specs-table">
+                <a-table
+                  :dataSource="form.skuList"
+                  :columns="tableColumns"
+                  :pagination="false"
+                  size="small"
+                  rowKey="skuId"
+                >
+                  <template #price="{ record }">
+                    <hide-input v-model="record.price" type="number" />
+                  </template>
+
+                  <template #cost="{ record }">
+                    <hide-input v-model="record.cost" type="number" />
+                  </template>
+
+                  <template #stock="{ record }">
+                    <hide-input v-model="record.stock" type="number" />
+                  </template>
+                </a-table>
+              </div>
             </a-form-item>
             <a-form-item label="已出售数">
               <a-input
@@ -203,146 +223,233 @@
 
     <div class="mt-lg bg-white info-item">
       <div class="page-title">其他设置</div>
+      <div class="page-form">
+        <a-form
+          :model="form"
+          :label-col="{
+            style: 'width:150px',
+          }"
+        >
+          <a-form-item label="状态">
+            <a-radio-group name="radioGroup" v-model:value="form.status">
+              <a-radio value="0">下架</a-radio>
+              <a-radio value="1">上架</a-radio>
+            </a-radio-group>
+          </a-form-item>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-import { toRefs, reactive, getCurrentInstance, watch } from 'vue';
-import uploadImage from '@/components/upload-image.vue';
+<script setup>
+import { reactive, getCurrentInstance, watch, ref } from 'vue';
+import UploadImage from '@/components/upload-image.vue';
+import HideInput from '@/components/hide-input.vue';
 import { v4 } from 'uuid';
-export default {
-  components: {
-    uploadImage,
+
+const { proxy } = getCurrentInstance();
+const form = reactive({
+  name: '',
+  subhead: '',
+  swiperImage: [],
+  type: '0',
+  cost: 0,
+  price: 0,
+  stock: 0,
+  sell: 0,
+  status: '1',
+  specsList: [
+    {
+      id: v4(),
+      name: '',
+      childrenList: [{ name: '', id: v4() }],
+    },
+  ],
+  skuList: [],
+});
+const classifyList = ref([
+  {
+    id: 0,
+    name: '分类1',
   },
-  setup() {
-    const state = reactive({
-      form: {
-        name: '',
-        subhead: '',
-        swiperImage: [],
-        type: '0',
-        cost: 0,
-        price: 0,
-        stock: 0,
-        sell: 0,
-        specsList: [
-          {
-            id: v4(),
-            name: '',
-            childrenList: [{ name: '', id: v4() }],
-          },
-        ],
-      },
-      classifyList: [
-        {
-          id: 0,
-          name: '分类1',
-        },
-        {
-          id: 1,
-          name: '分类2',
-        },
-      ],
-    });
+  {
+    id: 1,
+    name: '分类2',
+  },
+]);
+const initTableColumns = [
+  {
+    title: '售卖价格',
+    dataIndex: 'price',
+    key: 'price',
+    width: 150,
+    slots: { customRender: 'price' },
+  },
+  {
+    title: '成本价',
+    dataIndex: 'cost',
+    key: 'cost',
+    width: 150,
+    slots: { customRender: 'cost' },
+  },
+  {
+    title: '库存',
+    dataIndex: 'stock',
+    key: 'stock',
+    width: 150,
+    slots: { customRender: 'stock' },
+  },
+];
+const tableColumns = ref(initTableColumns);
 
-    const { proxy } = getCurrentInstance();
+//添加规格
+const handleAddSpecsItem = () => {
+  form.specsList.push({
+    id: v4(),
+    name: '',
+    childrenList: [],
+  });
+};
 
-    //添加规格
-    const handleAddSpecsItem = () => {
-      state.form.specsList.push({
-        id: v4(),
-        name: '',
-        childrenList: [],
+//添加规格值
+const handleAddSpecsChildrenItem = (item) => {
+  item.childrenList.push({ name: '', id: v4() });
+};
+
+//删除规格
+const handleDeleteSpecsItem = (index) => {
+  proxy.$confirm((status) => {
+    if (status) {
+      form.specsList.splice(index, 1);
+    }
+  }, '您确认删除这个规格吗?');
+};
+
+//删除规格值
+const handleDeleteSpecsChildrenItem = (item, index) => {
+  proxy.$confirm((status) => {
+    if (status) {
+      item.childrenList.splice(index, 1);
+    }
+  }, '您确认删除这个子规格吗?');
+};
+
+//生成规格表格
+const generateSpecsTable = (tree) => {
+  let ars = [];
+  const skus = form.skuList;
+  let treeColumns = [];
+  const treeLen = tree.length;
+  //将树结构解构为多维数组
+  tree.forEach((item, index) => {
+    let nextIndex = 0;
+    if (index != treeLen - 1) {
+      nextIndex = 1;
+      const nextArr = tree.slice(index + 1);
+      nextArr.forEach((nItem) => {
+        const cLen = nItem.childrenList.length;
+        nextIndex = nextIndex * (cLen ? cLen : 1);
       });
-    };
-
-    //添加规格值
-    const handleAddSpecsChildrenItem = (item) => {
-      item.childrenList.push({ name: '', id: v4() });
-    };
-
-    //删除规格
-    const handleDeleteSpecsItem = (index) => {
-      proxy.$confirm((status) => {
-        if (status) {
-          state.form.specsList.splice(index, 1);
-        }
-      }, '您确认删除这个规格吗?');
-    };
-
-    //删除规格值
-    const handleDeleteSpecsChildrenItem = (item, index) => {
-      proxy.$confirm((status) => {
-        if (status) {
-          item.childrenList.splice(index, 1);
-        }
-      }, '您确认删除这个子规格吗?');
-    };
-
-    //生成规格表格
-    const generateSpecsTable = (tree) => {
-      let ars = [];
-      //将树结构解构为多维数组
-      tree.forEach((item) => {
-        const iArs = [];
-        item.childrenList.forEach((cItem) => {
-          iArs.push({
-            id: cItem.id,
-            fName: item.name,
-            name: cItem.name,
+    }
+    treeColumns.push({
+      title: item.name,
+      dataIndex: item.id,
+      key: item.id,
+      ellipsis: true,
+      width: 150,
+      customRender:
+        index === treeLen - 1
+          ? null
+          : ({ text, index }) => {
+              const obj = {
+                children: text,
+                props: {},
+              };
+              if (nextIndex != 0) {
+                if (index % nextIndex === 0) {
+                  obj.props.rowSpan = nextIndex;
+                } else {
+                  obj.props.rowSpan = 0;
+                }
+              }
+              return obj;
+            },
+    });
+    const iArs = [];
+    item.childrenList.forEach((cItem) => {
+      iArs.push({
+        id: cItem.id,
+        fid: item.id,
+        fName: item.name,
+        name: cItem.name,
+      });
+    });
+    ars.push(iArs);
+  });
+  //计算规格数组
+  let specs = ars.reduce((total, value) => {
+    if (total?.length) {
+      let tem = [];
+      if (value.length) {
+        total.forEach((item) => {
+          value.forEach((vItem) => {
+            tem.push([].concat(...item, vItem));
           });
         });
-        ars.push(iArs);
-      });
-      //计算规格数组
-      let specs = ars.reduce((total, value) => {
-        if (total?.length) {
-          let tem = [];
-          if (value.length) {
-            total.forEach((item) => {
-              value.forEach((vItem) => {
-                tem.push([].concat(...item, vItem));
-              });
-            });
-            return tem;
-          } else {
-            return total;
-          }
-        } else {
-          let tem = [];
-          value.forEach((item) => {
-            tem.push([item]);
-          });
-          return tem;
-        }
-      }, []);
-
-      specs = specs.map(item => {
-        
-      })
-    };
-
-    watch(
-      () => state.form.specsList,
-      (value) => {
-        generateSpecsTable(value);
-      },
-      {
-        immediate: true,
-        deep: true,
+        return tem;
+      } else {
+        return total;
       }
-    );
+    } else {
+      let tem = [];
+      value.forEach((item) => {
+        tem.push([item]);
+      });
+      return tem;
+    }
+  }, []);
 
-    return {
-      ...toRefs(state),
-      handleAddSpecsChildrenItem,
-      handleAddSpecsItem,
-      handleDeleteSpecsItem,
-      handleDeleteSpecsChildrenItem,
+  specs = specs.map((item) => {
+    let skuId = '';
+    let obj = {
+      skuMap: item,
+      price: 0,
+      cost: 0,
+      stock: 0,
     };
-  },
+    item.forEach((lItem) => {
+      if (skuId === '') {
+        skuId = lItem.id;
+      } else {
+        skuId += `-${lItem.id}`;
+      }
+      obj[lItem.fid] = lItem.name;
+    });
+    obj.skuId = skuId;
+    const value = skus.find((sItem) => sItem.skuId === skuId);
+    if (value) {
+      obj.price = value.price;
+      obj.cost = value.cost;
+      obj.stock = value.stock;
+    }
+    return obj;
+  });
+
+  tableColumns.value = [].concat(treeColumns, initTableColumns);
+  form.skuList = specs;
 };
+
+watch(
+  () => form.specsList,
+  (value) => {
+    generateSpecsTable(value);
+  },
+  {
+    immediate: true,
+    deep: true,
+  }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -450,6 +557,15 @@ export default {
     > span {
       padding-left: 20px;
       font-size: 13px;
+    }
+  }
+  .specs-table {
+    margin-top: 18px;
+    margin-right: 20px;
+    ::v-deep(.ant-table-body) {
+      td {
+        vertical-align: middle;
+      }
     }
   }
 }

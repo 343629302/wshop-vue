@@ -53,103 +53,89 @@
   </a-layout>
 </template>
 
-<script>
+<script setup>
 import cSelect from '../../components/c-select.vue';
-import { reactive, toRefs } from 'vue';
+import { reactive } from 'vue';
 import CPagination from '../../components/c-pagination.vue';
-export default {
-  components: { cSelect, CPagination },
-  setup() {
-    const listStatus = [
-      {
-        id: 0,
-        name: '全部状态',
-      },
-      {
-        id: 1,
-        name: '已发布',
-      },
-      {
-        id: 2,
-        name: '未发布',
-      },
-    ];
 
-    const state = reactive({
-      tableOpt: {
-        columns: [
-          {
-            title: '页面名称',
-            dataIndex: 'name',
-            key: 'name',
-          },
-          {
-            title: '页面状态',
-            dataIndex: 'status',
-            key: 'status',
-            customRender: (item) => {
-              return item.text === 0 ? '未发布' : '已发布';
-            },
-          },
-          {
-            title: '最后保存时间',
-            dataIndex: 'saveTime',
-            key: 'saveTime',
-          },
-          {
-            title: '操作',
-            dataIndex: 'action',
-            key: 'action',
-            slots: { customRender: 'action' },
-          },
-        ],
-        search: {
-          status: 0,
-          page: 1,
-        },
-        data: [
-          {
-            id: 0,
-            name: '页面1',
-            status: 0,
-            saveTime: '2020-01-01',
-            endTime: '2020-01-01',
-          },
-          {
-            id: 1,
-            name: '页面2',
-            status: 0,
-            saveTime: '2020-01-01',
-            endTime: '2020-01-01',
-          },
-          {
-            id: 2,
-            name: '页面3',
-            status: 1,
-            saveTime: '2020-01-01',
-            endTime: '2020-01-01',
-          },
-        ],
-        total: 3,
-      },
-    });
-
-    //编辑页面
-    const handleEdit = (item) => {
-      console.log(item);
-    };
-
-    //获取页面列表
-    const getTableList = () => {
-      state.tableOpt.search.page = 1;
-    };
-
-    return {
-      listStatus,
-      getTableList,
-      handleEdit,
-      ...toRefs(state),
-    };
+const listStatus = [
+  {
+    id: 0,
+    name: '全部状态',
   },
+  {
+    id: 1,
+    name: '已发布',
+  },
+  {
+    id: 2,
+    name: '未发布',
+  },
+];
+const tableOpt = reactive({
+  columns: [
+    {
+      title: '页面名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '页面状态',
+      dataIndex: 'status',
+      key: 'status',
+      customRender: (item) => {
+        return item.text === 0 ? '未发布' : '已发布';
+      },
+    },
+    {
+      title: '最后保存时间',
+      dataIndex: 'saveTime',
+      key: 'saveTime',
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      slots: { customRender: 'action' },
+    },
+  ],
+  search: {
+    status: 0,
+    page: 1,
+  },
+  data: [
+    {
+      id: 0,
+      name: '页面1',
+      status: 0,
+      saveTime: '2020-01-01',
+      endTime: '2020-01-01',
+    },
+    {
+      id: 1,
+      name: '页面2',
+      status: 0,
+      saveTime: '2020-01-01',
+      endTime: '2020-01-01',
+    },
+    {
+      id: 2,
+      name: '页面3',
+      status: 1,
+      saveTime: '2020-01-01',
+      endTime: '2020-01-01',
+    },
+  ],
+  total: 3,
+});
+
+//编辑页面
+const handleEdit = (item) => {
+  console.log(item);
+};
+
+//获取页面列表
+const getTableList = () => {
+  tableOpt.search.page = 1;
 };
 </script>

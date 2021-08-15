@@ -93,163 +93,145 @@
   </a-modal>
 </template>
 
-<script>
-import { toRefs, reactive } from 'vue';
-export default {
-  props: {
-    maxLength: {
-      type: Number,
-      default: 10,
-    },
+<script setup>
+import { ref, reactive } from 'vue';
+const props = defineProps({
+  maxLength: {
+    type: Number,
+    default: 10,
   },
-  setup(props, { emit }) {
-    const state = reactive({
-      groupList: [
-        {
-          id: 0,
-          name: '全部',
-        },
-        {
-          id: 1,
-          name: '未分组',
-        },
-      ],
-      addGroupShow: false,
-      groupName: '',
-      search: {
-        activeGroup: 0,
-        keyWord: '',
-        pageNo: 1,
+});
+const emit = defineEmits();
+
+const groupList = ref([
+  {
+    id: 0,
+    name: '全部',
+  },
+  {
+    id: 1,
+    name: '未分组',
+  },
+]);
+const addGroupShow = ref(false);
+const groupName = ref('');
+const search = reactive({
+  activeGroup: 0,
+  keyWord: '',
+  pageNo: 1,
+});
+const imageList = ref([
+  {
+    id: 0,
+    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    width: 200,
+    height: 200,
+    name: '1.png',
+  },
+  {
+    id: 1,
+    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    width: 200,
+    height: 200,
+    name: '1.png',
+  },
+  {
+    id: 2,
+    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    width: 200,
+    height: 200,
+    name: '1.png',
+  },
+  {
+    id: 3,
+    url: 'https://img0.baidu.com/it/u=526718526,523325445&fm=26&fmt=auto&gp=0.jpg',
+    width: 200,
+    height: 200,
+    name: '1.png',
+  },
+  {
+    id: 4,
+    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    width: 200,
+    height: 200,
+    name: '1.png',
+  },
+]);
+const selectImageList = ref([]);
+const edit = ref(false);
+
+//点击分组触发
+const handleActiveChange = (id) => {
+  search.activeGroup = id;
+};
+
+//显示添加分组弹窗
+const handleAddGroupShow = () => {
+  groupName.value = '';
+  addGroupShow.value = true;
+};
+
+//添加新分组
+const handleAddGroupConfirm = () => {
+  addGroupShow.value = false;
+};
+
+//获取图片列表
+const getImageList = () => {};
+
+//上传照片
+const handleUploadChange = (event) => {
+  console.log(event);
+};
+
+//选择图片
+const handleSelectImage = (event) => {
+  if (
+    selectImageList.value.length >= props.maxLength ||
+    (edit.value && selectImageList.value.length === 1)
+  ) {
+    selectImageList.value = [
+      {
+        id: event.id,
+        url: event.url,
       },
-      imageList: [
-        {
-          id: 0,
-          url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
-          width: 200,
-          height: 200,
-          name: '1.png',
-        },
-        {
-          id: 1,
-          url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
-          width: 200,
-          height: 200,
-          name: '1.png',
-        },
-        {
-          id: 2,
-          url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
-          width: 200,
-          height: 200,
-          name: '1.png',
-        },
-        {
-          id: 3,
-          url: 'https://img0.baidu.com/it/u=526718526,523325445&fm=26&fmt=auto&gp=0.jpg',
-          width: 200,
-          height: 200,
-          name: '1.png',
-        },
-        {
-          id: 4,
-          url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
-          width: 200,
-          height: 200,
-          name: '1.png',
-        },
-      ],
-      selectImageList: [],
-      edit: false,
-    });
+    ];
+  } else {
+    const index = selectImageList.value.findIndex(
+      (item) => item.id === event.id
+    );
+    if (index === -1) {
+      selectImageList.value.push({
+        id: event.id,
+        url: event.url,
+      });
+    } else {
+      selectImageList.value.splice(index, 1);
+    }
+  }
+};
 
-    //点击分组触发
-    const handleActiveChange = (id) => {
-      state.search.activeGroup = id;
-    };
+//检查是否已选
+const checkIsSelect = (event) => {
+  return selectImageList.value.find((item) => item.id === event.id);
+};
 
-    //显示添加分组弹窗
-    const handleAddGroupShow = () => {
-      state.groupName = '';
-      state.addGroupShow = true;
-    };
+//修改编辑状态
+const handleEditChange = () => {
+  edit.value = true;
+};
 
-    //添加新分组
-    const handleAddGroupConfirm = () => {
-      state.addGroupShow = false;
-    };
+//弹窗关闭触发
+const handleModalCancel = () => {
+  selectImageList.value = [];
+  edit.value = false;
+};
 
-    //获取图片列表
-    const getImageList = () => {};
-
-    //上传照片
-    const handleUploadChange = (event) => {
-      console.log(event);
-    };
-
-    //选择图片
-    const handleSelectImage = (event) => {
-      if (
-        state.selectImageList.length >= props.maxLength ||
-        (state.edit && state.selectImageList.length === 1)
-      ) {
-        state.selectImageList = [
-          {
-            id: event.id,
-            url: event.url,
-          },
-        ];
-      } else {
-        const index = state.selectImageList.findIndex(
-          (item) => item.id === event.id
-        );
-        if (index === -1) {
-          state.selectImageList.push({
-            id: event.id,
-            url: event.url,
-          });
-        } else {
-          state.selectImageList.splice(index, 1);
-        }
-      }
-    };
-
-    //检查是否已选
-    const checkIsSelect = (event) => {
-      return state.selectImageList.find((item) => item.id === event.id);
-    };
-
-    //修改编辑状态
-    const handleEditChange = () => {
-      state.edit = true;
-    };
-
-    //弹窗关闭触发
-    const handleModalCancel = () => {
-      state.selectImageList = [];
-      state.edit = false;
-    };
-
-    //确认选择图片
-    const handleSelectConfirm = () => {
-      const image = state.selectImageList.map((item) => item.url);
-      emit('handleSelectConfirm', image);
-      handleModalCancel();
-    };
-
-    return {
-      ...toRefs(state),
-      handleActiveChange,
-      handleAddGroupShow,
-      handleAddGroupConfirm,
-      getImageList,
-      handleUploadChange,
-      handleSelectImage,
-      checkIsSelect,
-      handleModalCancel,
-      handleSelectConfirm,
-      handleEditChange,
-    };
-  },
+//确认选择图片
+const handleSelectConfirm = () => {
+  const image = selectImageList.value.map((item) => item.url);
+  emit('handleSelectConfirm', image);
+  handleModalCancel();
 };
 </script>
 

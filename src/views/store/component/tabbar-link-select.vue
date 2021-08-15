@@ -34,98 +34,88 @@
   </a-modal>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue';
-export default {
-  props: {
-    activeLink: {
-      type: [String, Number],
-      default: '',
-    },
+<script setup>
+import { reactive, ref } from 'vue';
+const props = defineProps({
+  activeLink: {
+    type: [String, Number],
+    default: '',
   },
-  setup(props, { emit }) {
-    const state = reactive({
-      activeKey: 0,
-      activeLinkItem: {},
-      linkList: [
-        {
-          title: '功能页面',
-          code: 'function',
-          list: [
-            {
-              name: '分类页',
-              path: '/pages/tab/classify',
-            },
-            {
-              name: '购物车',
-              path: '/pages/tab/car',
-            },
-            {
-              name: '用户中心',
-              path: '/pages/tab/user',
-            },
-          ],
-        },
-        {
-          title: '装修页面',
-          code: 'custom',
-          list: [
-            {
-              id: 0,
-              name: '装修1',
-            },
-            {
-              id: 1,
-              name: '装修2',
-            },
-            {
-              id: 2,
-              name: '胡花花花怙',
-            },
-          ],
-        },
-      ],
-    });
+});
+const emit = defineEmits();
 
-    //选择链接
-    const handleLinkSelect = (item) => {
-      state.activeLinkItem = item;
-      let link = '';
-      if (item.path) {
-        link = item.path;
-      } else {
-        link = item.id;
-      }
-      emit('update:activeLink', link);
-    };
-
-    //确认选择链接
-    const handleLinkSelectConfirm = () => {
-      if (Object.keys(state.activeLinkItem).length) {
-        let tem = {};
-        if (state.activeLinkItem.path) {
-          tem = {
-            code: 'function',
-            path: state.activeLinkItem.path,
-            name: state.activeLinkItem.name,
-          };
-        } else {
-          tem = {
-            code: 'custom',
-            path: state.activeLinkItem.id,
-            name: `装修页面 - ${state.activeLinkItem.name}`,
-          };
-        }
-        emit('confirm', tem);
-      }
-    };
-
-    return {
-      ...toRefs(state),
-      handleLinkSelect,
-      handleLinkSelectConfirm,
-    };
+const activeKey = ref(0);
+let activeLinkItem = reactive({});
+const linkList = ref([
+  {
+    title: '功能页面',
+    code: 'function',
+    list: [
+      {
+        name: '分类页',
+        path: '/pages/tab/classify',
+      },
+      {
+        name: '购物车',
+        path: '/pages/tab/car',
+      },
+      {
+        name: '用户中心',
+        path: '/pages/tab/user',
+      },
+    ],
   },
+  {
+    title: '装修页面',
+    code: 'custom',
+    list: [
+      {
+        id: 0,
+        name: '装修1',
+      },
+      {
+        id: 1,
+        name: '装修2',
+      },
+      {
+        id: 2,
+        name: '胡花花花怙',
+      },
+    ],
+  },
+]);
+
+//选择链接
+const handleLinkSelect = (item) => {
+  activeLinkItem = reactive(item);
+  let link = '';
+  if (item.path) {
+    link = item.path;
+  } else {
+    link = item.id;
+  }
+  emit('update:activeLink', link);
+};
+
+//确认选择链接
+const handleLinkSelectConfirm = () => {
+  if (Object.keys(activeLinkItem).length) {
+    let tem = {};
+    if (activeLinkItem.path) {
+      tem = {
+        code: 'function',
+        path: activeLinkItem.path,
+        name: activeLinkItem.name,
+      };
+    } else {
+      tem = {
+        code: 'custom',
+        path: activeLinkItem.id,
+        name: `装修页面 - ${activeLinkItem.name}`,
+      };
+    }
+    emit('confirm', tem);
+  }
 };
 </script>
 

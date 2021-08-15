@@ -14,7 +14,6 @@ export default {
       default: 50,
     },
   },
-  setup() {},
 };
 </script>
 

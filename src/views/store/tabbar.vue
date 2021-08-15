@@ -201,150 +201,125 @@
   </a-layout>
 </template>
 
-<script>
-import { reactive, toRefs, getCurrentInstance } from 'vue';
+<script setup>
+import { reactive, getCurrentInstance, ref } from 'vue';
 import TabbarIconSelect from './component/tabbar-icon-select.vue';
 import TabbarLinkSelect from './component/tabbar-link-select.vue';
-export default {
-  components: {
-    TabbarIconSelect,
-    TabbarLinkSelect,
-  },
-  setup() {
-    const state = reactive({
-      tabbarOpt: {
-        color: 'gray',
-        activeColor: 'red',
-        list: [
-          {
-            text: '首页',
-            path: '/pages/tab/index',
-            pathName: '首页',
-            code: 'function',
-            icon: 'home',
-          },
-          {
-            text: '分类',
-            path: '/pages/tab/classify',
-            pathName: '分类页',
-            code: 'function',
-            icon: 'classify',
-          },
-          {
-            text: '购物车',
-            path: '/pages/tab/car',
-            pathName: '购物车',
-            code: 'function',
-            icon: 'car',
-          },
-          {
-            text: '我的',
-            path: '/pages/tab/user',
-            pathName: '用户中心',
-            code: 'function',
-            icon: 'user',
-          },
-        ],
-      },
-      colorVisible: false,
-      iconSelectOpt: {
-        show: false,
-        title: '选择导航图标',
-        value: '',
-        valueIndex: 0,
-        width: 600,
-      },
-      linkSelectOpt: {
-        show: false,
-        title: '页面',
-        value: '',
-        valueIndex: 0,
-        width: 800,
-      },
-    });
-    const { proxy } = getCurrentInstance();
 
-    const colorOpt = {
-      red: '#FA392D',
-      gray: '#B2B1AF',
-      black: '#454545',
-      pink: '#FF7DAC',
-      yellow: '#FF8B0F',
-    };
-    const selectColorList = ['red', 'pink', 'yellow', 'black'];
-    const colorList = ['gray'];
+const tabbarOpt = reactive({
+  color: 'gray',
+  activeColor: 'red',
+  list: [
+    {
+      text: '首页',
+      path: '/pages/tab/index',
+      pathName: '首页',
+      code: 'function',
+      icon: 'home',
+    },
+    {
+      text: '分类',
+      path: '/pages/tab/classify',
+      pathName: '分类页',
+      code: 'function',
+      icon: 'classify',
+    },
+    {
+      text: '购物车',
+      path: '/pages/tab/car',
+      pathName: '购物车',
+      code: 'function',
+      icon: 'car',
+    },
+    {
+      text: '我的',
+      path: '/pages/tab/user',
+      pathName: '用户中心',
+      code: 'function',
+      icon: 'user',
+    },
+  ],
+});
+const colorVisible = ref(false);
+const iconSelectOpt = reactive({
+  show: false,
+  title: '选择导航图标',
+  value: '',
+  valueIndex: 0,
+  width: 600,
+});
+const linkSelectOpt = reactive({
+  show: false,
+  title: '页面',
+  value: '',
+  valueIndex: 0,
+  width: 800,
+});
+const colorOpt = {
+  red: '#FA392D',
+  gray: '#B2B1AF',
+  black: '#454545',
+  pink: '#FF7DAC',
+  yellow: '#FF8B0F',
+};
+const selectColorList = ['red', 'pink', 'yellow', 'black'];
+const colorList = ['gray'];
+const { proxy } = getCurrentInstance();
 
-    //改变导航选中颜色
-    const handleTableColorChange = (color) => {
-      state.tabbarOpt.activeColor = color;
-      state.colorVisible = false;
-    };
+//改变导航选中颜色
+const handleTableColorChange = (color) => {
+  tabbarOpt.activeColor = color;
+  colorVisible.value = false;
+};
 
-    //显示图标选择弹窗
-    const handleIconSelectShow = (index, image) => {
-      state.iconSelectOpt.show = true;
-      state.iconSelectOpt.value = image;
-      state.iconSelectOpt.valueIndex = index;
-    };
+//显示图标选择弹窗
+const handleIconSelectShow = (index, image) => {
+  iconSelectOpt.show = true;
+  iconSelectOpt.value = image;
+  iconSelectOpt.valueIndex = index;
+};
 
-    //显示链接选择弹窗
-    const handleLinkSelectShow = (index, link) => {
-      state.linkSelectOpt.show = true;
-      state.linkSelectOpt.value = link;
-      state.linkSelectOpt.valueIndex = index;
-    };
+//显示链接选择弹窗
+const handleLinkSelectShow = (index, link) => {
+  linkSelectOpt.show = true;
+  linkSelectOpt.value = link;
+  linkSelectOpt.valueIndex = index;
+};
 
-    //确认选择图标
-    const handleIconSelectConfirm = () => {
-      state.tabbarOpt.list[state.iconSelectOpt.valueIndex].icon =
-        state.iconSelectOpt.value;
-      state.iconSelectOpt.show = false;
-    };
+//确认选择图标
+const handleIconSelectConfirm = () => {
+  tabbarOpt.list[iconSelectOpt.valueIndex].icon = iconSelectOpt.value;
+  iconSelectOpt.show = false;
+};
 
-    //确认选择链接
-    const handleLinkSelectConfirm = (event) => {
-      const index = state.linkSelectOpt.valueIndex;
-      const item = state.tabbarOpt.list[index];
-      state.linkSelectOpt.show = false;
-      item.code = event.code;
-      item.pathName = event.name;
-      item.path = event.path;
-      // state.tabbarOpt.list.splice(index, 1, item);
-    };
+//确认选择链接
+const handleLinkSelectConfirm = (event) => {
+  const index = linkSelectOpt.valueIndex;
+  const item = tabbarOpt.list[index];
+  linkSelectOpt.show = false;
+  item.code = event.code;
+  item.pathName = event.name;
+  item.path = event.path;
+  // state.tabbarOpt.list.splice(index, 1, item);
+};
 
-    //删除tabbar
-    const handleDeleteTableItem = (index) => {
-      proxy.$confirm((status) => {
-        if (status) {
-          state.tabbarOpt.list.splice(index, 1);
-        }
-      }, '确认删除导航？');
-    };
+//删除tabbar
+const handleDeleteTableItem = (index) => {
+  proxy.$confirm((status) => {
+    if (status) {
+      tabbarOpt.list.splice(index, 1);
+    }
+  }, '确认删除导航？');
+};
 
-    //添加tabbar
-    const handleAddTableItem = () => {
-      state.tabbarOpt.list.push({
-        text: '',
-        path: '',
-        pathName: '',
-        icon: '',
-      });
-    };
-
-    return {
-      ...toRefs(state),
-      colorOpt,
-      selectColorList,
-      colorList,
-      handleTableColorChange,
-      handleIconSelectShow,
-      handleIconSelectConfirm,
-      handleDeleteTableItem,
-      handleAddTableItem,
-      handleLinkSelectShow,
-      handleLinkSelectConfirm,
-    };
-  },
+//添加tabbar
+const handleAddTableItem = () => {
+  tabbarOpt.list.push({
+    text: '',
+    path: '',
+    pathName: '',
+    icon: '',
+  });
 };
 </script>
 

@@ -10,29 +10,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    modelValue: {
-      type: Number,
-      default: 1,
-    },
-    dataTotal: {
-      type: Number,
-      default: 0,
-    },
+<script setup>
+const props = defineProps({
+  modelValue: {
+    type: Number,
+    default: 1,
   },
-  setup(props, { emit }) {
-    const handlePageChange = (page) => {
-      if (page != props.modelValue) {
-        emit('update:modelValue', page);
-        emit('change', page);
-      }
-    };
-    return {
-      handlePageChange,
-    };
+  dataTotal: {
+    type: Number,
+    default: 0,
   },
+});
+const emit = defineEmits();
+
+//分页修改时触发
+const handlePageChange = (page) => {
+  if (page != props.modelValue) {
+    emit('update:modelValue', page);
+    emit('change', page);
+  }
 };
 </script>
 
