@@ -46,6 +46,7 @@
             <upload-image
               :maxLength="10"
               v-model="form.swiperImage"
+              :disabled="false"
             ></upload-image>
             <div class="form-hint">
               作用于商品详情页顶部轮播；建议尺寸：750*750像素，轮播图可以拖拽图片调整顺序，最多上传10张（至少1张）

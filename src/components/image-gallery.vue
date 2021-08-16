@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive } from "vue";
 const props = defineProps({
   maxLength: {
     type: Number,
@@ -106,55 +106,55 @@ const emit = defineEmits();
 const groupList = ref([
   {
     id: 0,
-    name: '全部',
+    name: "全部",
   },
   {
     id: 1,
-    name: '未分组',
+    name: "未分组",
   },
 ]);
 const addGroupShow = ref(false);
-const groupName = ref('');
+const groupName = ref("");
 const search = reactive({
   activeGroup: 0,
-  keyWord: '',
+  keyWord: "",
   pageNo: 1,
 });
 const imageList = ref([
   {
     id: 0,
-    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    url: "https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg",
     width: 200,
     height: 200,
-    name: '1.png',
+    name: "1.png",
   },
   {
     id: 1,
-    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    url: "https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg",
     width: 200,
     height: 200,
-    name: '1.png',
+    name: "1.png",
   },
   {
     id: 2,
-    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    url: "https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg",
     width: 200,
     height: 200,
-    name: '1.png',
+    name: "1.png",
   },
   {
     id: 3,
-    url: 'https://img0.baidu.com/it/u=526718526,523325445&fm=26&fmt=auto&gp=0.jpg',
+    url: "https://img0.baidu.com/it/u=526718526,523325445&fm=26&fmt=auto&gp=0.jpg",
     width: 200,
     height: 200,
-    name: '1.png',
+    name: "1.png",
   },
   {
     id: 4,
-    url: 'https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg',
+    url: "https://img2.baidu.com/it/u=1271368579,724005262&fm=26&fmt=auto&gp=0.jpg",
     width: 200,
     height: 200,
-    name: '1.png',
+    name: "1.png",
   },
 ]);
 const selectImageList = ref([]);
@@ -167,7 +167,7 @@ const handleActiveChange = (id) => {
 
 //显示添加分组弹窗
 const handleAddGroupShow = () => {
-  groupName.value = '';
+  groupName.value = "";
   addGroupShow.value = true;
 };
 
@@ -230,9 +230,13 @@ const handleModalCancel = () => {
 //确认选择图片
 const handleSelectConfirm = () => {
   const image = selectImageList.value.map((item) => item.url);
-  emit('handleSelectConfirm', image);
+  emit("handleSelectConfirm", image);
   handleModalCancel();
 };
+
+defineExpose({
+  handleEditChange,
+});
 </script>
 
 <style lang="scss" scoped>
