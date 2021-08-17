@@ -6,7 +6,9 @@
           <a-tab-pane key="1" tab="基础信息">
             <edit-info />
           </a-tab-pane>
-          <a-tab-pane key="2" tab="产品详情"> 详情 </a-tab-pane>
+          <a-tab-pane key="2" tab="产品详情">
+            <edit-detail />
+          </a-tab-pane>
         </a-tabs>
       </div>
     </div>
@@ -14,7 +16,7 @@
       <div class="public-page-bottom">
         <a-button type="primary" @click="handleSaveConfirm()"> 保存 </a-button>
         <a-button class="ml-md" @click="handleSaveConfirm(activeTab)">{{
-          activeTab == '1' ? '下一步' : '上一步'
+          activeTab == "1" ? "下一步" : "上一步"
         }}</a-button>
       </div>
     </a-layout-footer>
@@ -22,15 +24,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import EditInfo from './components/edit-info.vue';
+import { ref } from "vue";
+import EditInfo from "./components/edit-info.vue";
+import EditDetail from "./components/edit-detail.vue";
 
-const activeTab = ref('1');
+const activeTab = ref("1");
 
 //保存表单
 const handleSaveConfirm = (status) => {
   if (status) {
-    activeTab.value = status === '1' ? '2' : '1';
+    activeTab.value = status === "1" ? "2" : "1";
   }
 };
 </script>
