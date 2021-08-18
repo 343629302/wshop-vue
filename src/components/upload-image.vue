@@ -56,7 +56,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits();
-
 const imageList = ref([]);
 const imageGalleryShow = ref(false);
 const editImageIndex = ref(-1);

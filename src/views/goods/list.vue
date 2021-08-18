@@ -40,7 +40,7 @@
 
               <template v-slot:status="{ record }">
                 <div class="goods-status">
-                  <span>{{ record.status == '0' ? '下架' : '上架' }}</span>
+                  <span>{{ record.status == "0" ? "下架" : "上架" }}</span>
                   <a-switch
                     v-model:checked="record.status"
                     checkedValue="1"
@@ -59,106 +59,115 @@
         </div>
       </div>
     </div>
-    <!-- <a-layout-footer>
+    <a-layout-footer>
       <c-pagination
         v-model="tableOpt.search.page"
         :dataTotal="tableOpt.total"
       ></c-pagination>
-    </a-layout-footer> -->
+    </a-layout-footer>
   </a-layout>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import useCommonHooks from '@/hooks/useCommonHooks';
+import { reactive } from "vue";
+import useCommonHooks from "@/hooks/useCommonHooks";
 
 const tableOpt = reactive({
   columns: [
     {
-      title: '商品名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: "商品名称",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: '价格',
-      dataIndex: 'price',
-      key: 'price',
-      slots: { customRender: 'price' },
+      title: "价格",
+      dataIndex: "price",
+      key: "price",
+      slots: { customRender: "price" },
     },
     {
-      title: '库存',
-      dataIndex: 'stock',
-      key: 'stock',
+      title: "库存",
+      dataIndex: "stock",
+      key: "stock",
     },
     {
-      title: '销量',
-      dataIndex: 'sales',
-      key: 'sales',
+      title: "销量",
+      dataIndex: "sales",
+      key: "sales",
     },
     {
-      title: '上下架时间',
-      dataIndex: 'statusTime',
-      key: 'statusTime',
+      title: "上下架时间",
+      dataIndex: "statusTime",
+      key: "statusTime",
     },
     {
-      title: '上架状态',
-      dataIndex: 'status',
-      key: 'status',
-      slots: { customRender: 'status' },
+      title: "上架状态",
+      dataIndex: "status",
+      key: "status",
+      slots: { customRender: "status" },
     },
     {
-      title: '操作',
-      dataIndex: 'action',
-      key: 'action',
-      slots: { customRender: 'action' },
+      title: "操作",
+      dataIndex: "action",
+      key: "action",
+      slots: { customRender: "action" },
     },
   ],
   data: [
     {
       id: 0,
-      status: '0',
-      name: '商品1',
-      price: '1000',
-      statusTime: '2021-10-10 20:00:00',
+      status: "0",
+      name: "商品1",
+      price: "1000",
+      statusTime: "2021-10-10 20:00:00",
       stock: 50,
       sales: 100,
     },
     {
       id: 1,
-      status: '0',
-      name: '商品2',
-      price: '1000',
-      statusTime: '2021-10-10 20:00:00',
+      status: "0",
+      name: "商品2",
+      price: "1000",
+      statusTime: "2021-10-10 20:00:00",
       stock: 50,
       sales: 100,
     },
     {
       id: 2,
-      status: '0',
-      name: '商品3',
-      price: '1000',
-      statusTime: '2021-10-10 20:00:00',
+      status: "0",
+      name: "商品3",
+      price: "1000",
+      statusTime: "2021-10-10 20:00:00",
       stock: 50,
       sales: 100,
     },
     {
       id: 3,
-      status: '0',
-      name: '商品4',
-      price: '1000',
-      statusTime: '2021-10-10 20:00:00',
+      status: "0",
+      name: "商品4",
+      price: "1000",
+      statusTime: "2021-10-10 20:00:00",
       stock: 50,
       sales: 100,
     },
   ],
+  search: {
+    page: 1,
+  },
+  total: 10,
 });
+const { jumpToPage } = useCommonHooks();
 
 //获取页面列表
 const getTableList = () => {
   console.log(tableOpt.data[0]);
 };
 
-const { jumpToPage } = useCommonHooks();
+//编辑商品
+const handleEdit = (item) => {
+
+}
+
 </script>
 
 <style lang="scss" scoped>

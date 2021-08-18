@@ -187,15 +187,11 @@
     <tabbar-icon-select
       v-model:visible="iconSelectOpt.show"
       v-model:activeIcon="iconSelectOpt.value"
-      :title="iconSelectOpt.title"
-      :width="iconSelectOpt.width"
       @ok="handleIconSelectConfirm"
     ></tabbar-icon-select>
     <tabbar-link-select
       v-model:visible="linkSelectOpt.show"
       v-model:activeLink="linkSelectOpt.value"
-      :title="linkSelectOpt.title"
-      :width="linkSelectOpt.width"
       @confirm="handleLinkSelectConfirm"
     ></tabbar-link-select>
   </a-layout>
@@ -243,17 +239,13 @@ const tabbarOpt = reactive({
 const colorVisible = ref(false);
 const iconSelectOpt = reactive({
   show: false,
-  title: '选择导航图标',
   value: '',
   valueIndex: 0,
-  width: 600,
 });
 const linkSelectOpt = reactive({
   show: false,
-  title: '页面',
   value: '',
   valueIndex: 0,
-  width: 800,
 });
 const colorOpt = {
   red: '#FA392D',

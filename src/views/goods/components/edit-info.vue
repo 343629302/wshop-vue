@@ -244,27 +244,33 @@
 </template>
 
 <script setup>
-import { reactive, getCurrentInstance, watch, ref } from 'vue';
-import UploadImage from '@/components/upload-image.vue';
-import HideInput from '@/components/hide-input.vue';
-import { v4 } from 'uuid';
+import { reactive, getCurrentInstance, watch, ref } from "vue";
+import UploadImage from "@/components/upload-image.vue";
+import HideInput from "@/components/hide-input.vue";
+import { v4 } from "uuid";
 
+const props = defineProps({
+  initForm: {
+    type: Object,
+    default: () => {},
+  },
+});
 const { proxy } = getCurrentInstance();
 const form = reactive({
-  name: '',
-  subhead: '',
+  name: "",
+  subhead: "",
   swiperImage: [],
-  type: '0',
+  type: "0",
   cost: 0,
   price: 0,
   stock: 0,
   sell: 0,
-  status: '1',
+  status: "1",
   specsList: [
     {
       id: v4(),
-      name: '',
-      childrenList: [{ name: '', id: v4() }],
+      name: "",
+      childrenList: [{ name: "", id: v4() }],
     },
   ],
   skuList: [],
@@ -272,34 +278,34 @@ const form = reactive({
 const classifyList = ref([
   {
     id: 0,
-    name: '分类1',
+    name: "分类1",
   },
   {
     id: 1,
-    name: '分类2',
+    name: "分类2",
   },
 ]);
 const initTableColumns = [
   {
-    title: '售卖价格',
-    dataIndex: 'price',
-    key: 'price',
+    title: "售卖价格",
+    dataIndex: "price",
+    key: "price",
     width: 150,
-    slots: { customRender: 'price' },
+    slots: { customRender: "price" },
   },
   {
-    title: '成本价',
-    dataIndex: 'cost',
-    key: 'cost',
+    title: "成本价",
+    dataIndex: "cost",
+    key: "cost",
     width: 150,
-    slots: { customRender: 'cost' },
+    slots: { customRender: "cost" },
   },
   {
-    title: '库存',
-    dataIndex: 'stock',
-    key: 'stock',
+    title: "库存",
+    dataIndex: "stock",
+    key: "stock",
     width: 150,
-    slots: { customRender: 'stock' },
+    slots: { customRender: "stock" },
   },
 ];
 const tableColumns = ref(initTableColumns);
@@ -308,14 +314,14 @@ const tableColumns = ref(initTableColumns);
 const handleAddSpecsItem = () => {
   form.specsList.push({
     id: v4(),
-    name: '',
+    name: "",
     childrenList: [],
   });
 };
 
 //添加规格值
 const handleAddSpecsChildrenItem = (item) => {
-  item.childrenList.push({ name: '', id: v4() });
+  item.childrenList.push({ name: "", id: v4() });
 };
 
 //删除规格
@@ -324,7 +330,7 @@ const handleDeleteSpecsItem = (index) => {
     if (status) {
       form.specsList.splice(index, 1);
     }
-  }, '您确认删除这个规格吗?');
+  }, "您确认删除这个规格吗?");
 };
 
 //删除规格值
@@ -333,7 +339,7 @@ const handleDeleteSpecsChildrenItem = (item, index) => {
     if (status) {
       item.childrenList.splice(index, 1);
     }
-  }, '您确认删除这个子规格吗?');
+  }, "您确认删除这个子规格吗?");
 };
 
 //生成规格表格
@@ -412,7 +418,7 @@ const generateSpecsTable = (tree) => {
   }, []);
 
   specs = specs.map((item) => {
-    let skuId = '';
+    let skuId = "";
     let obj = {
       skuMap: item,
       price: 0,
@@ -420,7 +426,7 @@ const generateSpecsTable = (tree) => {
       stock: 0,
     };
     item.forEach((lItem) => {
-      if (skuId === '') {
+      if (skuId === "") {
         skuId = lItem.id;
       } else {
         skuId += `-${lItem.id}`;
@@ -441,6 +447,16 @@ const generateSpecsTable = (tree) => {
   form.skuList = specs;
 };
 
+//返回表单
+const handleGetForm = () => {
+  return form;
+};
+
+//初始化
+const init = (event) => {
+  Object.assign(form, event);
+};
+
 watch(
   () => form.specsList,
   (value) => {
@@ -451,6 +467,11 @@ watch(
     deep: true,
   }
 );
+
+defineExpose({
+  handleGetForm,
+  init,
+});
 </script>
 
 <style lang="scss" scoped>

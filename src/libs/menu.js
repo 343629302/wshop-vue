@@ -26,6 +26,10 @@ const menus = [
         title: '全部商品',
         path: '/goods-list',
       },
+      {
+        title: '分类页面',
+        path: '/goods-category',
+      },
     ],
   },
   {
@@ -34,7 +38,7 @@ const menus = [
     childrens: [
       {
         title: '全部订单',
-        path: '',
+        path: '/order-list',
       },
     ],
   },

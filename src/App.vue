@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import zhCN from "ant-design-vue/es/locale/zh_CN";
 </script>
 
 <style>
@@ -15,5 +15,6 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN';
   -moz-osx-font-smoothing: grayscale;
   color: #595961;
   user-select: none;
+  font-size: 13px;
 }
 </style>

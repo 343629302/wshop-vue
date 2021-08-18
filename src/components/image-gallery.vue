@@ -102,7 +102,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits();
-
 const groupList = ref([
   {
     id: 0,

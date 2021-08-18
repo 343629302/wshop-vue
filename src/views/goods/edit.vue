@@ -3,11 +3,11 @@
     <div class="scroll-box">
       <div class="public-page">
         <a-tabs v-model:activeKey="activeTab" :animated="false">
-          <a-tab-pane key="1" tab="基础信息">
-            <edit-info />
+          <a-tab-pane key="1" tab="基础信息" :forceRender="true">
+            <edit-info ref="infoRef" />
           </a-tab-pane>
-          <a-tab-pane key="2" tab="产品详情">
-            <edit-detail />
+          <a-tab-pane key="2" tab="产品详情" :forceRender="true">
+            <edit-detail ref="detailRef" />
           </a-tab-pane>
         </a-tabs>
       </div>
@@ -29,12 +29,18 @@ import EditInfo from "./components/edit-info.vue";
 import EditDetail from "./components/edit-detail.vue";
 
 const activeTab = ref("1");
+const infoRef = ref();
+const detailRef = ref();
 
 //保存表单
 const handleSaveConfirm = (status) => {
   if (status) {
     activeTab.value = status === "1" ? "2" : "1";
   }
+  const info = infoRef.value.handleGetForm();
+  const detail = detailRef.value.handleGetForm();
+  const form = Object.assign({}, info, detail);
+  console.log(form);
 };
 </script>
 

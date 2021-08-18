@@ -37,7 +37,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
 const tableList = ref([]);
 const columns = ref([]);
 const slotColumns = ref([]);

@@ -13,7 +13,8 @@
     "vue-router": "^4.0.8",
     "vuedraggable": "^4.0.3",
     "vuex": "^4.0.1",
-    "wangeditor": "^4.7.6"
+    "wangeditor": "^4.7.6",
+    "xss": "^1.0.9"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.3.0",

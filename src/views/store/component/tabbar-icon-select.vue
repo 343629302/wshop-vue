@@ -1,5 +1,5 @@
 <template>
-  <a-modal>
+  <a-modal width="600px" title="选择导航图标">
     <div class="win-warpper">
       <ul>
         <li v-for="(item, index) in styleList" :key="index">
@@ -26,19 +26,18 @@
 const props = defineProps({
   activeIcon: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 const emit = defineEmits();
-
 const styleList = [
-  ['home', 'classify', 'car', 'user', 'member'],
-  ['home-solid', 'classify-solid', 'car-solid', 'user-solid', 'member-solid'],
+  ["home", "classify", "car", "user", "member"],
+  ["home-solid", "classify-solid", "car-solid", "user-solid", "member-solid"],
 ];
 
 //选择图标
 const handleSelectIcon = (icon) => {
-  emit('update:activeIcon', icon);
+  emit("update:activeIcon", icon);
 };
 </script>
 
