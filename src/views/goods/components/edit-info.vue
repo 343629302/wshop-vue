@@ -584,11 +584,6 @@ defineExpose({
   .specs-table {
     margin-top: 18px;
     margin-right: 20px;
-    ::v-deep(.ant-table-body) {
-      td {
-        vertical-align: middle;
-      }
-    }
   }
 }
 </style>

@@ -4,17 +4,24 @@
     :columns="columns"
     :row-selection="isSelect ? rowSelection : null"
   >
-    <template v-for="item in slotColumns" v-slot:[item]="slotProps">
+    <template
+      v-for="item in slotColumns"
+      v-slot:[item.name]="slotProps"
+      :key="item.name"
+    >
       <slot
-        :name="item"
+        :name="item.name"
         v-bind="{ record: slotProps.record, props: slotProps }"
+        v-if="item.key === 'custom'"
       ></slot>
+
+      <span v-else>{{ item.callback(slotProps.record) }}</span>
     </template>
   </a-table>
 </template>
 
 <script setup>
-import { watch, ref, onMounted } from 'vue';
+import { watch, ref, onMounted } from "vue";
 const props = defineProps({
   request: {
     type: Object,
@@ -72,7 +79,19 @@ const initColumns = () => {
   let slots = [];
   ars.forEach((item) => {
     if (item.slots && item.slots.customRender) {
-      slots.push(item.slots.customRender);
+      //判断是否格式方法，如果不是则使用自定义
+      if (item.slots.format && typeof item.slots.format === "function") {
+        slots.push({
+          name: item.slots.customRender,
+          key: "format",
+          callback: item.slots.format,
+        });
+      } else {
+        slots.push({
+          name: item.slots.customRender,
+          key: "custom",
+        });
+      }
     }
     if (item.ellipsis !== false) {
       item.ellipsis = true;

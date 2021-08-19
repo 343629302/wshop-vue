@@ -3,7 +3,7 @@
     <div class="scroll-box">
       <div class="public-page bg-white">
         <div class="page-name">
-          <span class="name">订单列表</span>
+          <span class="name">客户列表</span>
         </div>
         <div class="page-bg-gray">
           <div class="page-search-content">
@@ -24,9 +24,10 @@
               :pagination="false"
               isSelect
             >
-              <template v-slot:price="{ record }">
-                <div>
-                  <span>¥{{ record.price }}</span>
+              <template v-slot:name="{ record }">
+                <div class="d-flex">
+                  <c-avatar />
+                  <span class="ml-md">{{ record.name }}</span>
                 </div>
               </template>
             </c-table>
@@ -50,55 +51,61 @@ import useCommonHooks from "@/hooks/useCommonHooks";
 const tableOpt = reactive({
   columns: [
     {
-      title: "商品信息",
+      title: "客户信息",
       dataIndex: "name",
       key: "name",
+      slots: { customRender: "name" },
     },
     {
-      title: "实收金额",
-      dataIndex: "price",
-      key: "price",
-      slots: { customRender: "price" },
+      title: "成为客户时间",
+      dataIndex: "date",
+      key: "date",
     },
     {
-      title: "客户信息",
-      dataIndex: "customer",
-      key: "customer",
+      title: "最近消费时间",
+      dataIndex: "consumeDate",
+      key: "consumeDate",
+      slots: {
+        customRender: "consumeDate",
+        format: (event) => {
+          return event.consumeDate || "--";
+        },
+      },
     },
     {
-      title: "订单状态",
-      dataIndex: "status",
-      key: "status",
+      title: "消费金额",
+      dataIndex: "consumePrice",
+      key: "consumePrice",
     },
   ],
   data: [
     {
       id: 0,
-      price: "1000",
-      customer: "梁先生",
-      status: "已下单",
-      name: "商品A",
+      consumePrice: "1000",
+      name: "梁先生",
+      consumeDate: "2020-08-20 10:20:00",
+      date: "2020-08-20 10:20:00",
     },
     {
       id: 1,
-      price: "1000",
-      customer: "梁先生",
-      status: "已下单",
-      name: "商品A",
+      consumePrice: "1000",
+      name: "梁先生",
+      consumeDate: "2020-08-20 10:20:00",
+      date: "2020-08-20 10:20:00",
     },
     {
       id: 2,
-      price: "1000",
-      customer: "梁先生",
-      status: "已下单",
-      name: "商品A",
+      consumePrice: "0",
+      name: "梁先生",
+      consumeDate: "",
+      date: "2020-08-20 10:20:00",
     },
     {
       id: 3,
-      price: "1000",
-      customer: "梁先生",
-      status: "已下单",
-      name: "商品A",
+      consumePrice: "0",
+      name: "梁先生",
+      consumeDate: "",
+      date: "2020-08-20 10:20:00",
     },
   ],
   search: {

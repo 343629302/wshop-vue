@@ -199,8 +199,8 @@
 
 <script setup>
 import { reactive, getCurrentInstance, ref } from 'vue';
-import TabbarIconSelect from './component/tabbar-icon-select.vue';
-import TabbarLinkSelect from './component/tabbar-link-select.vue';
+import TabbarIconSelect from './components/tabbar-icon-select.vue';
+import TabbarLinkSelect from './components/tabbar-link-select.vue';
 
 const tabbarOpt = reactive({
   color: 'gray',

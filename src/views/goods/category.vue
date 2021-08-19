@@ -132,12 +132,3 @@ const editSuccess = () => {
 };
 
 </script>
-
-<style lang="scss" scoped>
-.goods-status {
-  > span {
-    padding-right: 10px;
-    font-size: 12px;
-  }
-}
-</style>

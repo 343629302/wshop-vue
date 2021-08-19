@@ -48,7 +48,7 @@ const menus = [
     childrens: [
       {
         title: '全部客户',
-        path: '',
+        path: 'customer-list',
       },
     ],
   },
