@@ -1,0 +1,38 @@
+.decorate-form-tabs {
+  ::v-deep(.ant-tabs-bar) {
+    .ant-tabs-nav {
+      width: 100%;
+      > div:nth-of-type(1) {
+        @extend .d-flex;
+        .ant-tabs-tab {
+          flex: 1;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.setting-block {
+  border-radius: 4px;
+  padding: 10px 10px 1px;
+  background: #f0f2f5;
+  margin: 0 auto 10px;
+  width: 340px;
+  margin-top: 10px;
+  .block-title {
+    line-height: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .block-item {
+    @extend .d-flex;
+    justify-content: space-between;
+    .block-item-title {
+      min-width: 35px;
+      margin-right: 5px;
+      flex-shrink: 0;
+    }
+  }
+}

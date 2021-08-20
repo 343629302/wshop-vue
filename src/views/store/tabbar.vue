@@ -7,7 +7,7 @@
         </div>
         <div class="page-bg-gray">
           <div class="visible-warpper">
-            <img src="@/assets/nav-mobile-top.png" alt="" />
+            <img src="src/assets/nav-mobile-top.png" alt="" />
             <div class="d1"></div>
             <div class="d2">
               <ul>

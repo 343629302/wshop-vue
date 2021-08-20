@@ -13,6 +13,11 @@
           tag="ul"
           item-key="key"
           :sort="false"
+          :group="{
+            name: 'decorate',
+            pull: 'clone',
+            put: false,
+          }"
         >
           <template #item="{ element }">
             <li>
@@ -36,6 +41,12 @@
           tag="ul"
           item-key="key"
           :sort="false"
+          ghostClass="sortable-ghost"
+          :group="{
+            name: 'decorate',
+            pull: 'clone',
+            put: false,
+          }"
         >
           <template #item="{ element }">
             <li>
@@ -138,14 +149,26 @@ const basicComponentList = [
           li {
             width: 90px;
             height: 90px;
-            display: flex;
+            > img {
+              width: auto;
+            }
+            @extend .d-flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            background-color: #f8f9fa;
           }
         }
       }
     }
+  }
+}
+.sortable-ghost {
+  height: 45px;
+  @extend .d-flex;
+  justify-content: center;
+  background-color: #96d299;
+  > img {
+    width: 45px;
   }
 }
 </style>

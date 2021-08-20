@@ -1,7 +1,7 @@
 <template>
   <a-layout-sider width="120">
     <div class="logo">
-      <img src="@/assets/logo.png" alt="" />
+      <img src="src/assets/logo.png" alt="" />
     </div>
     <div class="menu">
       <a-menu v-model:selectedKeys="selectedKeys">

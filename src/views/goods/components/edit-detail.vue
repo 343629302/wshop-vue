@@ -9,7 +9,7 @@
     <div class="detail-preview">
       <div class="title">商品详情预览</div>
       <div class="content show-content">
-        <img src="@/assets/righttop.png" alt="" />
+        <img src="src/assets/righttop.png" alt="" />
         <div v-html="form.detail"></div>
       </div>
     </div>
