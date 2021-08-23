@@ -18,17 +18,27 @@
       >
         <template #item="{ element, index }">
           <li
+            :class="{ active: componentActive === index }"
             @click="
               handleEmitFormChange(element.id, index, element.key, element.form)
             "
           >
-            <!-- <img :src="element.img" alt="" /> -->
-            <!-- <span>{{ element.name }}</span> -->
             <component
               :is="element.instance"
               :form="element.form"
               :key="element.id"
             />
+
+            <div class="affter-box" v-if="componentActive === index">
+              <span>{{ element.instanceName }}</span>
+              <c-icon
+                type="delete-one"
+                theme="filled"
+                fill="#b0b0ba"
+                size="14"
+                @click="handleDeleteItem(index)"
+              ></c-icon>
+            </div>
           </li>
         </template>
       </draggable>
@@ -36,13 +46,13 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, markRaw, nextTick } from "vue";
-import Draggable from "vuedraggable";
-import Search from "./decorate-component/search.vue";
-import emitter from "tiny-emitter/instance";
-import { v4 } from "uuid";
+import { ref, markRaw, nextTick } from 'vue';
+import Draggable from 'vuedraggable';
+import DecorateSearch from './decorate-component/search.vue';
+import DecorateImage from './decorate-component/image.vue';
+import emitter from 'tiny-emitter/instance';
+import { v4 } from 'uuid';
 
 const componentList = ref([]);
 const componentActive = ref(-1);
@@ -50,16 +60,18 @@ const componentActive = ref(-1);
 const getComponentInstance = (key) => {
   let instance = null;
   switch (key) {
-    case "search":
-      instance = Search;
+    case 'search':
+      instance = DecorateSearch;
       break;
+    case 'image':
+      instance = DecorateImage;
   }
   return markRaw(instance);
 };
 
 //初始化监听
 const initEventBus = () => {
-  emitter.on("decorate-form-change", (value) => {
+  emitter.on('decorate-form-change', (value) => {
     componentList.value[componentActive.value].form = value;
   });
 };
@@ -83,8 +95,13 @@ const handleDragAdd = (event) => {
 const handleEmitFormChange = (id, index, key, form) => {
   componentActive.value = index;
   nextTick(() => {
-    emitter.emit("decorate-component-change", id, key, form);
+    emitter.emit('decorate-component-change', id, key, form);
   });
+};
+
+//删除组件
+const handleDeleteItem = (index) => {
+  componentList.value.splice(index, 1);
 };
 
 initEventBus();
@@ -123,6 +140,35 @@ initEventBus();
     .page-component-list {
       flex: 1;
       height: 0;
+      > li {
+        position: relative;
+        border: 2px solid transparent;
+        cursor: pointer;
+        &:hover {
+          border-color: #2589ff;
+        }
+        &.active {
+          border-color: #2589ff;
+          box-shadow: 0 1px 25px 2px rgb(50 59 77 / 50%);
+        }
+        > .affter-box {
+          position: absolute;
+          top: 0px;
+          right: -20px;
+          padding: 0px 10px;
+          height: 30px;
+          transform: translateX(100%);
+          background-color: #fff;
+          box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
+          border-radius: 4px;
+          @extend .d-flex;
+          font-size: 12px;
+          > .i-icon {
+            margin-left: 15px;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }

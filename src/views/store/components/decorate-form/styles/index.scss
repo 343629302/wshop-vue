@@ -1,5 +1,6 @@
 .decorate-form-tabs {
   ::v-deep(.ant-tabs-bar) {
+    margin-bottom: 0px;
     .ant-tabs-nav {
       width: 100%;
       > div:nth-of-type(1) {
@@ -7,6 +8,7 @@
         .ant-tabs-tab {
           flex: 1;
           text-align: center;
+          font-size: 12px;
         }
       }
     }
@@ -30,9 +32,47 @@
     @extend .d-flex;
     justify-content: space-between;
     .block-item-title {
-      min-width: 35px;
+      min-width: 60px;
       margin-right: 5px;
       flex-shrink: 0;
+      font-size: 12px;
     }
+    margin-bottom: 20px;
+  }
+}
+
+.form-title{
+  height: 50px;
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 50px;
+}
+
+.tab-style {
+  margin: 10px auto;
+  margin-right: 10px;
+  background-color: #fff;
+  ::v-deep(.ant-radio-group.ant-radio-group-solid){
+    width: 100%;
+    display: flex;
+    .style-item {
+      flex: 1;
+      width: 0;
+      height: 38px;
+      border:1px solid #e3e2e5;
+      @extend .d-flex;
+      justify-content: center;
+      img{
+        width: 28px;
+      }
+    }
+  } 
+}
+
+.color-item {
+  display: flex;
+  > .ant-btn {
+    width: 60px;
   }
 }

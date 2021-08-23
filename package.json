@@ -11,6 +11,7 @@
     "tailwindcss": "^2.1.4",
     "tiny-emitter": "^2.1.0",
     "uuid": "^8.3.2",
+    "vcolorpicker": "^1.1.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.8",
     "vuedraggable": "^4.0.3",

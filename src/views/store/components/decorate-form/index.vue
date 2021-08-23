@@ -8,9 +8,10 @@
 </template>
 
 <script setup>
-import { ref, shallowRef } from "vue";
-import emitter from "tiny-emitter/instance";
-import Search from "./search.vue";
+import { ref, shallowRef } from 'vue';
+import emitter from 'tiny-emitter/instance';
+import FormSearch from './search.vue';
+import FormImage from './image.vue';
 
 const activeFormComponent = shallowRef(null);
 const activeFormKey = ref(null);
@@ -18,7 +19,7 @@ const form = ref({});
 
 //初始化监听
 const initEventBus = () => {
-  emitter.on("decorate-component-change", (id, key, value) => {
+  emitter.on('decorate-component-change', (id, key, value) => {
     form.value = JSON.parse(JSON.stringify(value));
     activeFormKey.value = id;
     getComponentInstance(key);
@@ -29,9 +30,11 @@ const initEventBus = () => {
 const getComponentInstance = (key) => {
   let instance = null;
   switch (key) {
-    case "search":
-      instance = Search;
+    case 'search':
+      instance = FormSearch;
       break;
+    case 'image':
+      instance = FormImage;
   }
   activeFormComponent.value = instance;
 };
@@ -39,7 +42,7 @@ const getComponentInstance = (key) => {
 //表单改变触发
 const handleFormChange = (value) => {
   const form = JSON.parse(JSON.stringify(value));
-  emitter.emit("decorate-form-change", form);
+  emitter.emit('decorate-form-change', form);
 };
 
 initEventBus();

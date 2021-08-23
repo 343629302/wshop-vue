@@ -28,35 +28,6 @@
         </draggable>
       </div>
     </a-collapse-panel>
-    <a-collapse-panel key="2" :showArrow="false">
-      <template v-slot:header>
-        <div class="panel-header">
-          <span>基础组件</span>
-          <c-icon type="down" fill="#595961" />
-        </div>
-      </template>
-      <div class="panel-content">
-        <draggable
-          v-model="basicComponentList"
-          tag="ul"
-          item-key="key"
-          :sort="false"
-          ghostClass="sortable-ghost"
-          :group="{
-            name: 'decorate',
-            pull: 'clone',
-            put: false,
-          }"
-        >
-          <template #item="{ element }">
-            <li>
-              <img :src="element.img" alt="" />
-              <span>{{ element.name }}</span>
-            </li>
-          </template>
-        </draggable>
-      </div>
-    </a-collapse-panel>
   </a-collapse>
 </template>
 
@@ -110,11 +81,11 @@ const basicComponentList = [
     key: "classify",
     name: "商品分组",
   },
-  {
-    img: "src/assets/store/storeHead.png",
-    key: "storeHead",
-    name: "店铺头部",
-  },
+  // {
+  //   img: "src/assets/store/storeHead.png",
+  //   key: "storeHead",
+  //   name: "店铺头部",
+  // },
   {
     img: "src/assets/store/storeNotice.png",
     key: "storeNotice",
@@ -149,13 +120,16 @@ const basicComponentList = [
           li {
             width: 90px;
             height: 90px;
-            > img {
-              width: auto;
-            }
             @extend .d-flex;
             flex-direction: column;
             justify-content: center;
             background-color: #f8f9fa;
+            > img {
+              width: 74px;
+            }
+            > span{
+              font-size: 12px;
+            }
           }
         }
       }
@@ -166,7 +140,7 @@ const basicComponentList = [
   height: 45px;
   @extend .d-flex;
   justify-content: center;
-  background-color: #96d299;
+  background-color: rgba(145,224,248,.3);
   > img {
     width: 45px;
   }
