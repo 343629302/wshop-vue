@@ -100,6 +100,10 @@ const props = defineProps({
     type: Number,
     default: 10,
   },
+  isInfo: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits();
 const groupList = ref([
@@ -193,6 +197,9 @@ const handleSelectImage = (event) => {
       {
         id: event.id,
         url: event.url,
+        name: event.name,
+        width: event.width,
+        height: event.height,
       },
     ];
   } else {
@@ -203,6 +210,9 @@ const handleSelectImage = (event) => {
       selectImageList.value.push({
         id: event.id,
         url: event.url,
+        name: event.name,
+        width: event.width,
+        height: event.height,
       });
     } else {
       selectImageList.value.splice(index, 1);
@@ -224,11 +234,21 @@ const handleEditChange = () => {
 const handleModalCancel = () => {
   selectImageList.value = [];
   edit.value = false;
+  emit("handleSelectCancel");
 };
 
 //确认选择图片
 const handleSelectConfirm = () => {
-  const image = selectImageList.value.map((item) => item.url);
+  const image = props.isInfo
+    ? selectImageList.value.map((item) => {
+        return {
+          name: item.name,
+          url: item.url,
+          width: item.width,
+          height: item.height,
+        };
+      })
+    : selectImageList.value.map((item) => item.url);
   emit("handleSelectConfirm", image);
   handleModalCancel();
 };

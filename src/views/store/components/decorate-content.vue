@@ -15,6 +15,7 @@
           pull: false,
         }"
         :onAdd="handleDragAdd"
+        :onChange="handleDragChange"
       >
         <template #item="{ element, index }">
           <li
@@ -47,12 +48,12 @@
 </template>
 
 <script setup>
-import { ref, markRaw, nextTick } from 'vue';
-import Draggable from 'vuedraggable';
-import DecorateSearch from './decorate-component/search.vue';
-import DecorateImage from './decorate-component/image.vue';
-import emitter from 'tiny-emitter/instance';
-import { v4 } from 'uuid';
+import { ref, markRaw, nextTick } from "vue";
+import Draggable from "vuedraggable";
+import DecorateSearch from "./decorate-component/search.vue";
+import DecorateImage from "./decorate-component/image.vue";
+import emitter from "tiny-emitter/instance";
+import { v4 } from "uuid";
 
 const componentList = ref([]);
 const componentActive = ref(-1);
@@ -60,10 +61,10 @@ const componentActive = ref(-1);
 const getComponentInstance = (key) => {
   let instance = null;
   switch (key) {
-    case 'search':
+    case "search":
       instance = DecorateSearch;
       break;
-    case 'image':
+    case "image":
       instance = DecorateImage;
   }
   return markRaw(instance);
@@ -71,7 +72,7 @@ const getComponentInstance = (key) => {
 
 //初始化监听
 const initEventBus = () => {
-  emitter.on('decorate-form-change', (value) => {
+  emitter.on("decorate-form-change", (value) => {
     componentList.value[componentActive.value].form = value;
   });
 };
@@ -95,13 +96,23 @@ const handleDragAdd = (event) => {
 const handleEmitFormChange = (id, index, key, form) => {
   componentActive.value = index;
   nextTick(() => {
-    emitter.emit('decorate-component-change', id, key, form);
+    emitter.emit("decorate-component-change", id, key, form);
   });
 };
 
 //删除组件
 const handleDeleteItem = (index) => {
   componentList.value.splice(index, 1);
+};
+
+//拖拽元素变化触发
+const handleDragChange = (event) => {
+  //如果是拖拽元素的话，改变当前元素的索引值和表单
+  if (event.moved) {
+    const index = event.moved.newIndex;
+    const item = componentList.value[index];
+    handleEmitFormChange(item.id, index, item.key, item.form);
+  }
 };
 
 initEventBus();

@@ -81,6 +81,7 @@ import DecorateForm from "./components/decorate-form/index.vue";
       flex-shrink: 0;
       background: #f8f9fa;
       padding:2px 0 2px 5px;
+      height: 100%;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-search">
+  <div class="form-search decorate-form-public-warpper">
     <div class="form-title">搜索</div>
     <a-tabs v-model:activeKey="activeKey" class="decorate-form-tabs">
       <a-tab-pane key="1" tab="内容设置">
@@ -102,8 +102,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue';
-import ColorSelect from '@/components/color-select.vue';
+import { ref, reactive, watch } from "vue";
+import ColorSelect from "@/components/color-select.vue";
 
 const props = defineProps({
   initForm: {
@@ -112,17 +112,17 @@ const props = defineProps({
   },
 });
 const emit = defineEmits();
-const activeKey = ref('1');
+const activeKey = ref("1");
 const form = reactive({});
 const localInitForm = {
-  placeholder: '搜索你感兴趣的内容',
-  style: 'outline',
-  outlineColor: '#595961',
-  backgroundColor: '#ffffff',
-  borderStyle: 'round',
-  position: 'left',
-  topPadding: '0px',
-  bottomPadding: '0px',
+  placeholder: "搜索你感兴趣的内容",
+  style: "outline",
+  outlineColor: "#595961",
+  backgroundColor: "#ffffff",
+  borderStyle: "round",
+  position: "left",
+  topPadding: "0px",
+  bottomPadding: "0px",
 };
 
 //初始化
@@ -136,12 +136,12 @@ const init = () => {
 
 //监听表单改变触发
 watch(form, (val) => {
-  emit('formChange', val);
+  emit("formChange", val);
 });
 
 init();
 </script>
 
 <style lang="scss" scoped>
-@import './styles/index.scss';
+@import "./styles/index.scss";
 </style>
