@@ -190,6 +190,8 @@ init();
 <style lang="scss" scoped>
 @import "./styles/index.scss";
 .image-list {
+  height: 100%;
+  overflow-y: scroll;
   > .top-text {
     font-size: 14px;
     color: #9797a1;
